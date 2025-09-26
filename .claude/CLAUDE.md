@@ -108,21 +108,39 @@ This Nextflow pipeline reimplements the legacy PCPIP workflow that consisted of 
 - **Pipelines 5-8**: Barcoding track (illumination, alignment, barcode calling, stitching)
 - **Pipeline 9**: Combined analysis (alignment, feature extraction, barcode assignment)
 
-The original specification is documented in `external/resources/pcpip-specs.md` and the legacy implementation is in `external/pooled-cell-painting-image-processing/`.
-
 #### External Resources
 
-The `external/pcpip_json_graphs/` directory is a symlink to the starrynight repository's PCPIP CellProfiler pipeline files in JSON format (located at `../starrynight/docs/developer/legacy/pcpip-pipelines/_ref_graph_format/json/`). These files contain the CellProfiler pipeline definitions for each of the 9 PCPIP pipelines.
+This project references external resources via symlinks in the `external/` directory. All repositories should be cloned at the same parent level as this repository:
 
-To access these files, ensure the starrynight repository is cloned alongside this repository:
+1. **PCPIP Specifications** (`external/pcpip-specs.md`): Original PCPIP workflow specification from starrynight
+2. **PCPIP I/O Configuration** (`external/pcpip-io.json`): Input/output metadata configuration from starrynight
+3. **CellProfiler Pipeline Definitions** (`external/pcpip_json_pipelines/`): JSON format pipeline files for all 9 PCPIP pipelines from starrynight
+4. **Legacy Implementation** (`external/pooled-cell-painting-image-processing/`): Original AWS Lambda-based PCPIP implementation
+5. **Pipeline Assets** (`external/nf-pooled-cellpainting-assets/`): Additional assets for the Nextflow pipeline
+
+To set up these external dependencies:
 
 ```bash
-# Clone starrynight repo at the specific commit used for reference
+# Navigate to parent directory
 cd ..
+
+# 1. Clone starrynight repository (provides PCPIP specs, I/O config, and pipeline definitions)
 git clone https://github.com/broadinstitute/starrynight.git
 cd starrynight
 git checkout 1807217bc28a5c0335bd0bbb67c48de29c19fee5
+cd ..
+
+# 2. Clone pooled-cell-painting-image-processing repository (legacy implementation)
+git clone https://github.com/broadinstitute/pooled-cell-painting-image-processing.git
+
+# 3. Clone nf-pooled-cellpainting-assets repository (pipeline assets)
+git clone https://github.com/broadinstitute/nf-pooled-cellpainting-assets.git
+
+# Return to this repository
+cd nf-pooled-cellpainting
 ```
+
+All symlinks in `external/` will automatically point to the correct locations once these repositories are cloned.
 
 ### Current Nextflow Implementation
 
