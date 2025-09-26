@@ -7,7 +7,9 @@ testing/
 testing*
 *.pyc
 null/
+# Ignore CLAUDE.md symlink at root, but not in .claude/
 CLAUDE.md
+!.claude/CLAUDE.md
 .nf-test.log
 .nf-test/
 external/

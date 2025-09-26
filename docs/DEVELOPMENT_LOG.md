@@ -1,6 +1,7 @@
 # Development Log: nf-pooled-cellpainting
 
 ## Format Guidelines
+
 - Assume familiarity with Nextflow and CellProfiler
 - Focus on actionable insights and technical details
 - Minimize hierarchical structure and formatting
@@ -14,6 +15,7 @@
 The pipeline generates different CellProfiler load_data.csv files at multiple stages. Currently implemented using Groovy collection operations in two subworkflows: `cellprofiler_load_data_csv` and `cellprofiler_load_data_csv_with_illum`.
 
 Key pattern: Same samplesheet processed multiple times with different grouping keys:
+
 - Stage 1: Group by [batch, plate, channels] → illumination calc CSV
 - Stage 2: Group by [batch, plate, well] + illum files → illumination apply CSV
 - Stage 3: [NOT IMPLEMENTED] Needs to discover outputs from Stage 2
@@ -33,17 +35,20 @@ Root cause: Groovy/channels designed for static dataflow, but CSV generation nee
 Proposed solution: Hybrid approach where Nextflow process calls Python script with JSON metadata, Python generates CSV using pandas, returns CSV path to Nextflow channel. This maintains workflow orchestration in Nextflow while leveraging appropriate tools for tabular operations.
 
 Implementation needs:
+
 - Python script per pipeline CSV format
 - JSON schema for Nextflow-Python metadata exchange
 - Process wrapper for Python execution
 - File discovery mechanism for intermediate outputs
 
 Next steps:
+
 - Prototype Pipeline 3 CSV generation in Python
 - Define metadata JSON schema
 - Test subprocess performance impact
 
 Key files:
+
 - `subworkflows/local/cellprofiler_load_data_csv_with_illum/main.nf:97-213` - Cycle-based CSV logic
 - `external/pooled-cell-painting-image-processing/lambda/lambda_functions/create_CSVs.py:97-141` - Pipeline 3 reference
 - `subworkflows/local/cellpainting/main.nf:23-66` - Multi-stage CSV pattern
